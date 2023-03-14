@@ -1,0 +1,12 @@
+import telegram
+from telegram.ext import Updater, CommandHandler
+updater = Updater(token='YOUR_TOKEN_HERE', use_context=True)
+def start(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello! I'm a bot for an ETH token airdrop. Please enter your ETH wallet address.")
+def eth_address(update, context):
+    address = update.message.text
+    # Process the address and send the tokens to it.
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Your tokens have been sent to " + address)
+updater.dispatcher.add_handler(CommandHandler('start', start))
+updater.dispatcher.add_handler(MessageHandler(Filters.regex(r'^0x[a-fA-F0-9]{40}$'), eth_address))
+updater.start_polling()
